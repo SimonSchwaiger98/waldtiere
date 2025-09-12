@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotfuchs</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    .content {
+      padding: 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .image-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap; /* sorgt für Umbruch auf kleinen Bildschirmen */
+    }
+
+    .image-row img {
+      max-width: 48%;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      color: #2e7d32;
+      margin-top: 1.5rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    audio {
+      margin-top: 1rem;
+    }
+
+    .backlink {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.5rem 1rem;
+      background: #2e7d32;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .backlink:hover {
+      background: #1b5e20;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Rotfuchs <span style="font-size:1.2rem; font-style:italic; color:#ddd;">(Vulpes vulpes)</span></h1>
+  </header>
+
+  <div class="content">
+    <!-- Zwei Bilder nebeneinander -->
+    <div class="image-row">
+      <img src="../bilder/fuchs.jpg" alt="Rotfuchs">
+      <img src="../bilder/fuchs2.jpg" alt="Rotfuchs im Wald">
+    </div>
+
+    <!-- Kategorien mit deinem Text -->
+    <h2>Allgemeines</h2>
+    <p>
+      Der Rotfuchs gehört zur Familie der Hunde und ist das am weitesten verbreitete Raubtier der Welt. 
+      Er wird etwa 60 bis 90 Zentimeter lang, dazu kommt noch ein buschiger Schwanz von bis zu 40 Zentimetern. 
+      Das Gewicht liegt zwischen 5 und 8 Kilogramm, in seltenen Fällen auch etwas mehr. 
+      In der Wildnis können Füchse bis zu 10 Jahre alt werden, meist jedoch nur 3 bis 5 Jahre. 
+      Ihr dichtes Fell ist rötlich gefärbt, der Bauch oft heller und die Schwanzspitze weiß. 
+      Der Rotfuchs lebt nicht nur in Europa, sondern auch in Asien, Nordamerika und sogar in Australien, wohin er von Menschen gebracht wurde.
+    </p>
+
+    <h2>Lebensraum</h2>
+    <p>
+      Der Hauptlebensraum des Rotfuchses ist der Wald, wo er in Bauten lebt oder selbst Erdhöhlen gräbt. 
+      Er passt sich aber sehr gut an unterschiedliche Umgebungen an und kommt deshalb auch in Feldern, Wiesen, Bergen und sogar in Städten und Dörfern vor. 
+      In Siedlungen fühlt er sich wohl, da er hier vor der Jagd geschützt ist und leicht Nahrung findet.
+    </p>
+
+    <h2>Nahrung</h2>
+    <p>
+      Rotfüchse sind Allesfresser, ernähren sich aber hauptsächlich von kleinen Säugetieren wie Mäusen. 
+      Ein Fuchs kann an einem Tag so viele Mäuse fangen, dass man später im Magen Dutzende Tiere nachweisen kann. 
+      Neben Mäusen frisst er auch Kaninchen, Vögel, Insekten, Beeren und Aas. 
+      Seine Fressfeinde sind vor allem größere Raubtiere wie Luchse oder Wölfe, in manchen Regionen auch Greifvögel, die Jungfüchse erbeuten.
+    </p>
+
+    <h2>Besonderheiten</h2>
+    <p>
+      Der Rotfuchs ist ein sehr anpassungsfähiges Tier. 
+      Er kann sowohl in dichten Wäldern als auch in Großstädten leben und findet fast überall Nahrung. 
+      Besonders auffällig ist sein guter Geruchssinn und sein ausgezeichnetes Gehör, mit dem er sogar Mäuse unter der Schneedecke orten kann. 
+      Sein buschiger Schwanz hilft ihm beim Laufen und Springen das Gleichgewicht zu halten.
+    </p>
+
+    <h2>Gefährdung und Schutz</h2>
+    <p>
+      Der Rotfuchs ist nicht gefährdet und zählt zu den häufigsten Raubtieren Europas. 
+      Dennoch wird er in vielen Regionen stark bejagt, vor allem wegen seines Fells oder um Wildbestände zu schützen. 
+      Schutzmaßnahmen im engeren Sinn gibt es kaum, da die Population stabil ist. 
+      In Städten und Dörfern profitiert der Rotfuchs jedoch vom Jagdverbot und kann sich dadurch ungestört ausbreiten.
+    </p>
+
+    <h2>So klingt der Fuchs</h2>
+    <audio controls>
+      <source src="../audio/fuchs.mp3" type="audio/mpeg">
+      Dein Browser unterstützt das Abspielen von Audio nicht.
+    </audio>
+
+    <!-- Zurück-Button -->
+    <br>
+    <a href="../index.html" class="backlink">Zurück zur Startseite</a>
+  </div>
+</body>
+</html>
