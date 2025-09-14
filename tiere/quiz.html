@@ -117,6 +117,7 @@
     <div class="grid" id="crossword"></div>
 
     <button class="checkbtn" onclick="checkAll()">Alles prüfen</button>
+    <button class="checkbtn" onclick="resetQuiz()">Neu starten</button>
     <div id="result"></div>
 
     <div class="clues">
@@ -287,9 +288,25 @@
 
     // beim Laden wiederherstellen
     window.addEventListener("DOMContentLoaded", loadProgress);
+    function resetQuiz() {
+  // Eingaben zurücksetzen
+  const inputs = document.querySelectorAll(".cell input");
+  inputs.forEach(inp => {
+    inp.value = "";
+    inp.style.background = "white";
+  });
+
+  // Speicher leeren
+  localStorage.removeItem("quizProgress");
+
+  // Bonusfrage leeren
+  document.getElementById("bonusInput").value = "";
+  document.getElementById("bonusResult").textContent = "";
+}
    </script>
 </body>
 </html>
+
 
 
 
