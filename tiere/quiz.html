@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waldbewohner-Kreuzworträtsel</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Comic Neue", "Comic Sans MS", cursive, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url("bilder/Wald.jpg") no-repeat center center fixed;
+      background-size: cover;
+    }
+    header {
+      background: rgba(46, 125, 50, 0.85);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    h1 { margin: 0; font-size: 2.2rem; }
+    .auftrag {
+      margin: 1rem auto;
+      padding: 1rem;
+      max-width: 1000px;
+      font-size: 1.2rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      text-align: center;
+      color: #2e7d32;
+      font-weight: bold;
+    }
+    .content {
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(20, 35px);
+      gap: 2px;
+      justify-content: center;
+      margin: 2rem auto;
+    }
+    .cell {
+      width: 35px;
+      height: 35px;
+      border: 1px solid #ccc;
+      position: relative;
+      background: white;
+    }
+    .cell.hidden {
+      visibility: hidden;
+    }
+    .cell input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      text-align: center;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+    }
+    .number {
+      position: absolute;
+      top: 2px;
+      left: 4px;
+      font-size: 0.6rem;
+      color: black;
+    }
+    .clues {
+      margin-top: 2rem;
+      text-align: left;
+    }
+    .clues h2 { color: #2e7d32; }
+    .backlink, .checkbtn {
+      display: inline-block;
+      margin: 1rem;
+      padding: 0.5rem 1rem;
+      background: #2e7d32;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .backlink:hover, .checkbtn:hover { background: #1b5e20; }
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    #bonusResult {
+      margin-top: 0.5rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #f57f17;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Waldbewohner-Kreuzworträtsel</h1>
+  </header>
+
+  <div class="auftrag">
+    Kannst du alle Waldbewohner in diesem Kreuzworträtsel eintragen? <br>
+    Die Hinweise helfen dir beim Ausfüllen! <br>
+    Findest du heraus, welches Tier fehlt?
+  </div>
+
+  <div class="content">
+    <div class="grid" id="crossword"></div>
+
+    <button class="checkbtn" onclick="checkAll()">Alles prüfen</button>
+    <div id="result"></div>
+
+    <div class="clues">
+      <h2>Fragen</h2>
+      <ol>
+        <li>Hinterlässt „Suhlen“ beim Wühlen. (11 Buchstaben)</li>
+        <li>Geschickter Kletterer mit gelbem Kehlfleck. (10 Buchstaben)</li>
+        <li>Baut Hügel aus Nadeln und Zweigen. (10 Buchstaben)</li>
+        <li>Kleinstes heimisches Hirschwild. (3 Buchstaben)</li>
+        <li>Gräbt weit verzweigte Bausysteme. (5 Buchstaben)</li>
+        <li>Eingewandertes Tier mit „Gesichtsmaske“. (8 Buchstaben)</li>
+        <li>Trägt ein mächtiges Geweih, das jedes Jahr neu wächst. (9 Buchstaben)</li>
+        <li>Legt Vorräte an, vergräbt Nüsse. (12 Buchstaben)</li>
+        <li>Größter Käfer Europas, Männchen mit „Geweih“. (12 Buchstaben)</li>
+        <li>Greifvogel mit gegabeltem Schwanz. (8 Buchstaben)</li>
+        <li>Größte heimische Fledermaus. (12 Buchstaben)</li>
+        <li>Heimische Wildkatze mit Pinselohren. (5 Buchstaben)</li>
+        <li>Größte Eule Europas, erkennbar an Federohren. (3 Buchstaben)</li>
+      </ol>
+
+      <h3>Bonusfrage:</h3>
+      <p>Welches Tier fehlt?</p>
+      <input type="text" id="bonusInput" placeholder="Antwort eingeben">
+      <button class="checkbtn" onclick="checkBonus()">Prüfen</button>
+      <div id="bonusResult"></div>
+    </div>
+
+    <a href="index.html" class="backlink">Zurück zur Startseite</a>
+  </div>
+
+  <script>
+    const rawGrid = [
+      "...W.....B..........",
+      "...I....WALDAMEISE..",
+      "...L.....U..........",
+      "...D.....M..........",
+      "...S.....M.....R....",
+      ".DACHS..WASCHBAER...",
+      "...H.....R.....H....",
+      "...W.....D..........",
+      "...E...R.E..........",
+      "..EICHHOERNCHEN.....",
+      "...N...T............",
+      ".......H............",
+      "......HIRSCHKAEFER..",
+      ".......R.........O..",
+      "..ABENDSEGLER....T..",
+      ".......C.........M..",
+      "....LUCHS........I..",
+      ".....H...........L..",
+      ".....U...........A..",
+      ".................N.."
+    ];
+
+    const crossword = document.getElementById("crossword");
+    const rows = rawGrid.length;
+    const cols = rawGrid[0].length;
+
+    let clueNumber = 1;
+
+    function isStartOfWord(r, c) {
+      const ch = rawGrid[r][c];
+      if (ch === ".") return false;
+      let across = false, down = false;
+      if (c === 0 || rawGrid[r][c-1] === ".") {
+        if (c+1 < cols && rawGrid[r][c+1] !== ".") across = true;
+      }
+      if (r === 0 || rawGrid[r-1][c] === ".") {
+        if (r+1 < rows && rawGrid[r+1][c] !== ".") down = true;
+      }
+      return across || down;
+    }
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const ch = rawGrid[r][c];
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        if (ch === ".") {
+          cell.classList.add("hidden");
+        } else {
+          if (isStartOfWord(r, c)) {
+            const num = document.createElement("div");
+            num.className = "number";
+            num.textContent = clueNumber++;
+            cell.appendChild(num);
+          }
+          const input = document.createElement("input");
+          input.maxLength = 1;
+          input.dataset.correct = ch.toUpperCase();
+
+          input.addEventListener("input", () => {
+            if (input.value.toUpperCase() === input.dataset.correct) {
+              input.style.background = "#c8e6c9";
+            } else {
+              input.style.background = "#ffcdd2";
+            }
+            const next = input.parentElement.nextElementSibling?.querySelector("input");
+            if (input.value && next) next.focus();
+          });
+
+          // Nur falsche löschen
+          input.addEventListener("focus", () => {
+            if (input.value.toUpperCase() !== input.dataset.correct) {
+              input.value = "";
+              input.style.background = "white";
+            }
+          });
+
+          cell.appendChild(input);
+        }
+        crossword.appendChild(cell);
+      }
+    }
+
+    function checkAll() {
+      const inputs = document.querySelectorAll(".cell input");
+      let allCorrect = true;
+      inputs.forEach(inp => {
+        if (inp.value.toUpperCase() !== inp.dataset.correct) {
+          allCorrect = false;
+          inp.style.background = "#ffcdd2";
+        } else {
+          inp.style.background = "#c8e6c9";
+        }
+      });
+      const result = document.getElementById("result");
+      if (allCorrect) {
+        result.textContent = "🎉 Alles richtig – super gemacht!";
+        result.style.color = "green";
+      } else {
+        result.textContent = "❌ Noch nicht alles korrekt. Versuch's nochmal!";
+        result.style.color = "red";
+      }
+    }
+
+    function checkBonus() {
+      const input = document.getElementById("bonusInput");
+      const answer = input.value.trim().toUpperCase();
+      const result = document.getElementById("bonusResult");
+      if (answer === "ROTFUCHS") {
+        result.textContent = "⭐ Richtig, der Rotfuchs fehlt!";
+      } else {
+        result.textContent = "❌ Leider falsch. Versuch es nochmal!";
+      }
+    }
+  </script>
+</body>
+</html>
