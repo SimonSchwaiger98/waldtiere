@@ -263,8 +263,33 @@
         result.textContent = "❌ Leider falsch. Versuch es nochmal!";
       }
     }
-  </script>
+        // === Speicher-Funktion ===
+    function saveProgress() {
+      const inputs = document.querySelectorAll(".cell input");
+      let state = [];
+      inputs.forEach(inp => state.push(inp.value));
+      localStorage.setItem("quizProgress", JSON.stringify(state));
+    }
+
+    // === Lade-Funktion ===
+    function loadProgress() {
+      const saved = localStorage.getItem("quizProgress");
+      if (!saved) return;
+      const state = JSON.parse(saved);
+      const inputs = document.querySelectorAll(".cell input");
+      inputs.forEach((inp, i) => {
+        if (state[i]) inp.value = state[i];
+      });
+    }
+
+    // nach jeder Eingabe speichern
+    document.addEventListener("input", saveProgress);
+
+    // beim Laden wiederherstellen
+    window.addEventListener("DOMContentLoaded", loadProgress);
+   </script>
 </body>
 </html>
+
 
 
