@@ -2,11 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Waldbewohner-Kreuzworträtsel</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
-
+  <title>Tierquiz</title>
   <style>
     body {
       font-family: "Comic Neue", "Comic Sans MS", cursive, sans-serif;
@@ -15,134 +11,140 @@
       background: url("../bilder/wald.jpg") no-repeat center center fixed;
       background-size: cover;
     }
-    header {
-      background: rgba(46, 125, 50, 0.85);
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    h1 { margin: 0; font-size: 2.2rem; }
-    .auftrag {
-      margin: 1rem auto;
-      padding: 1rem;
-      max-width: 1000px;
-      font-size: 1.2rem;
+
+    .content {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
       background: rgba(255, 255, 255, 0.9);
       border-radius: 12px;
-      text-align: center;
-      color: #2e7d32;
-      font-weight: bold;
     }
-    .content {
-      padding: 1rem;
-      max-width: 1200px;
-      margin: 0 auto;
+
+    .buttons {
       text-align: center;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 12px;
+      margin-bottom: 20px;
     }
+
+    .checkbtn {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .checkbtn:hover {
+      background: #45a049;
+    }
+
+    .quiz-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    /* === Skalierendes Raster === */
     .grid {
       display: grid;
-      grid-template-columns: repeat(20, 35px);
+      grid-template-columns: repeat(20, 1fr);
       gap: 2px;
-      justify-content: center;
-      margin: 2rem auto;
+      width: 100%;
+      max-width: 600px; /* maximale Größe auf Desktop */
     }
+
     .cell {
-      width: 35px;
-      height: 35px;
-      border: 1px solid #ccc;
+      aspect-ratio: 1 / 1; /* immer quadratisch */
+      border: 1px solid #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
-      background: white;
     }
-    .cell.hidden {
-      visibility: hidden;
-    }
+
     .cell input {
       width: 100%;
       height: 100%;
       border: none;
       text-align: center;
-      font-size: 1.1rem;
+      font-size: clamp(12px, 2vw, 18px); /* dynamische Schriftgröße */
       text-transform: uppercase;
     }
+
+    .clues {
+      flex: 1 1 300px;
+      max-width: 400px;
+    }
+
     .number {
       position: absolute;
-      top: 2px;
-      left: 4px;
-      font-size: 0.6rem;
+      top: 0;
+      left: 2px;
+      font-size: 10px;
       color: black;
     }
-    .clues {
-      margin-top: 2rem;
-      text-align: left;
-    }
-    .clues h2 { color: #2e7d32; }
-    .backlink, .checkbtn {
+
+    .backlink {
       display: inline-block;
-      margin: 1rem;
-      padding: 0.5rem 1rem;
-      background: #2e7d32;
-      color: white;
-      border-radius: 8px;
+      margin-top: 20px;
       text-decoration: none;
-      cursor: pointer;
-    }
-    .backlink:hover, .checkbtn:hover { background: #1b5e20; }
-    #result {
-      margin-top: 1rem;
+      color: #333;
       font-weight: bold;
-      font-size: 1.2rem;
     }
-    #bonusResult {
-      margin-top: 0.5rem;
-      font-weight: bold;
-      font-size: 1.2rem;
-      color: #f57f17;
+
+    @media (max-width: 900px) {
+      .quiz-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .clues {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Waldbewohner-Kreuzworträtsel</h1>
-  </header>
-
-  <div class="auftrag">
-    Kannst du alle Waldbewohner in diesem Kreuzworträtsel eintragen? <br>
-    Die Hinweise helfen dir beim Ausfüllen! <br>
-    Findest du heraus, welches Tier fehlt?
-  </div>
-
   <div class="content">
-    <div class="grid" id="crossword"></div>
+    <h1>Tierquiz</h1>
+    <p><strong>Kannst du alle Waldbewohner in diesem Kreuzworträtsel eintragen? 
+    Die Hinweise helfen dir beim Ausfüllen! Findest du heraus, welches Tier fehlt?</strong></p>
 
-    <button class="checkbtn" onclick="checkAll()">Alles prüfen</button>
-    <button class="checkbtn" onclick="resetQuiz()">Neu starten</button>
-    <div id="result"></div>
+    <div class="buttons">
+      <button class="checkbtn" onclick="checkAll()">Alles prüfen</button>
+      <button class="checkbtn" onclick="resetQuiz()">Neu starten</button>
+      <div id="result"></div>
+    </div>
 
-    <div class="clues">
-      <h2>Fragen</h2>
-      <ol>
-        <li>Hinterlässt „Suhlen“ beim Wühlen. (11 Buchstaben)</li>
-        <li>Geschickter Kletterer mit gelbem Kehlfleck. (10 Buchstaben)</li>
-        <li>Baut Hügel aus Nadeln und Zweigen. (10 Buchstaben)</li>
-        <li>Kleinstes heimisches Hirschwild. (3 Buchstaben)</li>
-        <li>Gräbt weit verzweigte Bausysteme. (5 Buchstaben)</li>
-        <li>Eingewandertes Tier mit „Gesichtsmaske“. (8 Buchstaben)</li>
-        <li>Trägt ein mächtiges Geweih, das jedes Jahr neu wächst. (9 Buchstaben)</li>
-        <li>Legt Vorräte an, vergräbt Nüsse. (12 Buchstaben)</li>
-        <li>Größter Käfer Europas, Männchen mit „Geweih“. (12 Buchstaben)</li>
-        <li>Greifvogel mit gegabeltem Schwanz. (8 Buchstaben)</li>
-        <li>Größte heimische Fledermaus. (12 Buchstaben)</li>
-        <li>Heimische Wildkatze mit Pinselohren. (5 Buchstaben)</li>
-        <li>Größte Eule Europas, erkennbar an Federohren. (3 Buchstaben)</li>
-      </ol>
+    <div class="quiz-container">
+      <div class="grid" id="crossword"></div>
 
-      <h3>Bonusfrage:</h3>
-      <p>Welches Tier fehlt?</p>
-      <input type="text" id="bonusInput" placeholder="Antwort eingeben">
-      <button class="checkbtn" onclick="checkBonus()">Prüfen</button>
-      <div id="bonusResult"></div>
+      <div class="clues">
+        <h2>Fragen</h2>
+        <ol>
+          <li>Dieses Tier ist das größte heimische Wildtier in Deutschland (7)</li>
+          <li>Ein Marder mit gelbem Kehlfleck, lebt in Wäldern (10)</li>
+          <li>Ein Insekt, das große Hügel baut (11)</li>
+          <li>Kleinstes heimisches Hirschwild (3)</li>
+          <li>Hat ein markantes Streifenmuster im Gesicht (5)</li>
+          <li>Wurde aus Nordamerika nach Europa gebracht (8)</li>
+          <li>Trägt ein imposantes Geweih (9)</li>
+          <li>Springt mit buschigem Schwanz von Ast zu Ast (12)</li>
+          <li>Ein Käfer mit geweihartigen Zangen (13)</li>
+          <li>Ein Greifvogel mit tief gegabeltem Schwanz (14)</li>
+          <li>Größte heimische Fledermaus (15)</li>
+          <li>Die größte heimische Wildkatze (16)</li>
+          <li>Die größte Eule der Welt (17)</li>
+        </ol>
+
+        <h3>Bonusfrage:</h3>
+        <p>Welches Tier fehlt?</p>
+        <input type="text" id="bonusInput" placeholder="Antwort eingeben">
+        <button class="checkbtn" onclick="checkBonus()">Prüfen</button>
+        <div id="bonusResult"></div>
+      </div>
     </div>
 
     <a href="../index.html" class="backlink">Zurück zur Startseite</a>
@@ -172,64 +174,52 @@
       ".................N.."
     ];
 
-    const crossword = document.getElementById("crossword");
-    const rows = rawGrid.length;
-    const cols = rawGrid[0].length;
+    const solution = rawGrid.map(r => r.split(""));
 
-    let clueNumber = 1;
-
-    function isStartOfWord(r, c) {
-      const ch = rawGrid[r][c];
-      if (ch === ".") return false;
-      let across = false, down = false;
-      if (c === 0 || rawGrid[r][c-1] === ".") {
-        if (c+1 < cols && rawGrid[r][c+1] !== ".") across = true;
-      }
-      if (r === 0 || rawGrid[r-1][c] === ".") {
-        if (r+1 < rows && rawGrid[r+1][c] !== ".") down = true;
-      }
-      return across || down;
+    function createCrossword() {
+      const grid = document.getElementById("crossword");
+      rawGrid.forEach((row, r) => {
+        row.split("").forEach((ch, c) => {
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          if (ch !== ".") {
+            const input = document.createElement("input");
+            input.maxLength = 1;
+            input.dataset.solution = ch;
+            input.addEventListener("input", e => {
+              e.target.value = e.target.value.toUpperCase();
+              if (e.target.value === e.target.dataset.solution) {
+                e.target.style.background = "#b6fcb6";
+                moveToNextInput(r, c);
+              } else {
+                e.target.style.background = "white";
+              }
+              saveProgress();
+            });
+            input.addEventListener("focus", e => {
+              if (e.target.value !== e.target.dataset.solution) {
+                e.target.value = "";
+              }
+            });
+            cell.appendChild(input);
+          } else {
+            cell.style.background = "transparent";
+            cell.style.border = "none";
+          }
+          grid.appendChild(cell);
+        });
+      });
+      loadProgress();
     }
 
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const ch = rawGrid[r][c];
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        if (ch === ".") {
-          cell.classList.add("hidden");
-        } else {
-          if (isStartOfWord(r, c)) {
-            const num = document.createElement("div");
-            num.className = "number";
-            num.textContent = clueNumber++;
-            cell.appendChild(num);
-          }
-          const input = document.createElement("input");
-          input.maxLength = 1;
-          input.dataset.correct = ch.toUpperCase();
-
-          input.addEventListener("input", () => {
-            if (input.value.toUpperCase() === input.dataset.correct) {
-              input.style.background = "#c8e6c9";
-            } else {
-              input.style.background = "#ffcdd2";
-            }
-            const next = input.parentElement.nextElementSibling?.querySelector("input");
-            if (input.value && next) next.focus();
-          });
-
-          // Nur falsche löschen
-          input.addEventListener("focus", () => {
-            if (input.value.toUpperCase() !== input.dataset.correct) {
-              input.value = "";
-              input.style.background = "white";
-            }
-          });
-
-          cell.appendChild(input);
+    function moveToNextInput(r, c) {
+      const inputs = document.querySelectorAll(".cell input");
+      const index = r * 20 + c;
+      for (let i = index + 1; i < inputs.length; i++) {
+        if (inputs[i]) {
+          inputs[i].focus();
+          break;
         }
-        crossword.appendChild(cell);
       }
     }
 
@@ -237,21 +227,14 @@
       const inputs = document.querySelectorAll(".cell input");
       let allCorrect = true;
       inputs.forEach(inp => {
-        if (inp.value.toUpperCase() !== inp.dataset.correct) {
-          allCorrect = false;
-          inp.style.background = "#ffcdd2";
+        if (inp.value === inp.dataset.solution) {
+          inp.style.background = "#b6fcb6";
         } else {
-          inp.style.background = "#c8e6c9";
+          allCorrect = false;
+          inp.style.background = "#fcb6b6";
         }
       });
-      const result = document.getElementById("result");
-      if (allCorrect) {
-        result.textContent = "🎉 Alles richtig – super gemacht!";
-        result.style.color = "green";
-      } else {
-        result.textContent = "❌ Noch nicht alles korrekt. Versuch's nochmal!";
-        result.style.color = "red";
-      }
+      document.getElementById("result").textContent = allCorrect ? "✅ Alles korrekt!" : "❌ Da stimmt noch etwas nicht.";
     }
 
     function checkBonus() {
@@ -264,7 +247,8 @@
         result.textContent = "❌ Leider falsch. Versuch es nochmal!";
       }
     }
-        // === Speicher-Funktion ===
+
+    // === Speicher-Funktion ===
     function saveProgress() {
       const inputs = document.querySelectorAll(".cell input");
       let state = [];
@@ -283,30 +267,19 @@
       });
     }
 
-    // nach jeder Eingabe speichern
-    document.addEventListener("input", saveProgress);
-
-    // beim Laden wiederherstellen
-    window.addEventListener("DOMContentLoaded", loadProgress);
+    // === Neu starten Funktion ===
     function resetQuiz() {
-  // Eingaben zurücksetzen
-  const inputs = document.querySelectorAll(".cell input");
-  inputs.forEach(inp => {
-    inp.value = "";
-    inp.style.background = "white";
-  });
+      const inputs = document.querySelectorAll(".cell input");
+      inputs.forEach(inp => {
+        inp.value = "";
+        inp.style.background = "white";
+      });
+      localStorage.removeItem("quizProgress");
+      document.getElementById("bonusInput").value = "";
+      document.getElementById("bonusResult").textContent = "";
+    }
 
-  // Speicher leeren
-  localStorage.removeItem("quizProgress");
-
-  // Bonusfrage leeren
-  document.getElementById("bonusInput").value = "";
-  document.getElementById("bonusResult").textContent = "";
-}
-   </script>
+    window.addEventListener("DOMContentLoaded", createCrossword);
+  </script>
 </body>
 </html>
-
-
-
-
